@@ -137,32 +137,7 @@ const Register = () => {
               />
             </div>
 
-            {/* password strength indicator */}
-            {formData.password && (
-              <div>
-                <div className="flex gap-1 mt-1">
-                  <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                    formData.password.length > 0 ? "bg-red-500" : "bg-[#334155]"
-                  }`} />
-                  <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                    formData.password.length >= 6 ? "bg-amber-500" : "bg-[#334155]"
-                  }`} />
-                  <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                    formData.password.length >= 8 ? "bg-amber-400" : "bg-[#334155]"
-                  }`} />
-                  <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                    formData.password.length >= 10 ? "bg-green-500" : "bg-[#334155]"
-                  }`} />
-                </div>
-                <p className="text-xs text-slate-500 mt-1">
-                  {formData.password.length < 6 && "Weak — at least 6 characters"}
-                  {formData.password.length >= 6 && formData.password.length < 8 && "Fair — getting stronger"}
-                  {formData.password.length >= 8 && formData.password.length < 10 && "Good password"}
-                  {formData.password.length >= 10 && "Strong password"}
-                </p>
-              </div>
-            )}
-
+            
             {/* submit button */}
             <button
               type="submit"
