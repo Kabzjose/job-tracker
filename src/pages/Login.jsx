@@ -20,10 +20,12 @@ const Login = () => {
     setError(null)
     try {
       const res = await api.post("/auth/login", formData)
+      
       login(res.data.user, res.data.accessToken, res.data.refreshToken)
       navigate("/dashboard")
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong")
+      console.log("error:", err.response?.data)
     } finally {
       setLoading(false)
     }

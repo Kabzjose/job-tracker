@@ -6,7 +6,7 @@ import api from "../services/api"
 
 const statusColors = {
   Applied: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  Interviewing: "bg-amber-500/10 text-amber-400 border border-amber-500/20",
+  Interview: "bg-amber-500/10 text-amber-400 border border-amber-500/20",
   Offer: "bg-green-500/10 text-green-400 border border-green-500/20",
   Rejected: "bg-red-500/10 text-red-400 border border-red-500/20"
 }
@@ -48,7 +48,7 @@ const Dashboard = () => {
   // stats
   const stats = {
     total: jobs.length,
-    interviewing: jobs.filter(j => j.status === "Interviewing").length,
+    interview: jobs.filter(j => j.status === "Interview").length,
     offers: jobs.filter(j => j.status === "Offer").length,
     rejected: jobs.filter(j => j.status === "Rejected").length
   }
@@ -83,14 +83,14 @@ const Dashboard = () => {
         {/* stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <StatsCard label="Total Applied" count={stats.total} color="text-white" />
-          <StatsCard label="Interviewing" count={stats.interviewing} color="text-amber-400" />
+          <StatsCard label="Interviewing" count={stats.interview} color="text-amber-400" />
           <StatsCard label="Offers" count={stats.offers} color="text-green-400" />
           <StatsCard label="Rejected" count={stats.rejected} color="text-red-400" />
         </div>
 
         {/* filter tabs */}
         <div className="flex gap-2 mb-6 flex-wrap">
-          {["All", "Applied", "Interviewing", "Offer", "Rejected"].map(tab => (
+          {["All", "Applied", "Interview", "Offer", "Rejected"].map(tab => (
             <button
               key={tab}
               onClick={() => setFilter(tab)}

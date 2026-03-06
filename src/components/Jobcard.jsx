@@ -129,7 +129,7 @@ const AddJobModal = ({ onClose, onJobAdded }) => {
               className="w-full bg-[#334155] text-white rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#f59e0b] transition"
             >
               <option value="Applied">Applied</option>
-              <option value="Interviewing">Interviewing</option>
+              <option value="Interview">Interview</option>
               <option value="Offer">Offer</option>
               <option value="Rejected">Rejected</option>
             </select>
