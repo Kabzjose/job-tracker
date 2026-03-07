@@ -81,9 +81,9 @@ const Login = () => {
                 <label className="block text-sm text-slate-400">
                   Password
                 </label>
-                <a href="#" className="text-xs text-[#f59e0b] hover:text-[#d97706] transition">
-                  Forgot password?
-                </a>
+                <Link to="/forgot-password" className="text-xs text-[#f59e0b] hover:text-[#d97706] transition">
+                Forgot password?
+              </Link>
               </div>
               <input
                 type="password"

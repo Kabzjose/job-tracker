@@ -4,6 +4,8 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Dashboard from "./pages/Dashboard"
 import PrivateRoute from "./components/PrivateRoute"
+import ForgotPassword from "./pages/ForgotPassword"
+import ResetPassword from "./pages/ResetPassword"
 
 
 function App(){
@@ -19,6 +21,9 @@ return(
         <Dashboard/>
         </PrivateRoute>
         }/> 
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+
     </Routes>
     </BrowserRouter>
   </AuthProvider>
