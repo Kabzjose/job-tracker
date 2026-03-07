@@ -1,6 +1,7 @@
 import { useAuth } from "../context/AuthContext"
-import { useNavigate } from "react-router-dom"
+import { useNavigate ,Link} from "react-router-dom"
 import api from "../services/api"
+
 
 const Navbar = () => {
   const { user, logout } = useAuth()
@@ -26,8 +27,14 @@ const Navbar = () => {
         </h1>
         <div className="flex items-center gap-4">
           <span className="text-sm text-slate-400">
-            Hey, <span className="text-white font-medium">{user?.name}</span>
+            Hey, <span className="text-white font-medium"><Link
+          to="/profile"
+          className="text-sm text-green-400 hover:text-white transition"
+        >
+          {user?.name}
+        </Link></span>
           </span>
+           
           <button
             onClick={handleLogout}
             className="text-sm bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white px-4 py-2 rounded-lg transition duration-200"

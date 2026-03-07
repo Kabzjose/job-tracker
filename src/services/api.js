@@ -9,6 +9,7 @@ const api=axios.create({
 });
 //checks if there's a token in localStorage and if there is, it automatically attaches it to the request header
 api.interceptors.request.use(config=>{
+    
     const token=localStorage.getItem('accessToken');
     if(token){
         config.headers.Authorization=`Bearer ${token}`;

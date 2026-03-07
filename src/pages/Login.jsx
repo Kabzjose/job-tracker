@@ -25,7 +25,7 @@ const Login = () => {
       navigate("/dashboard")
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong")
-      console.log("error:", err.response?.data)
+      console.log("full error:", err.response?.data)
     } finally {
       setLoading(false)
     }
