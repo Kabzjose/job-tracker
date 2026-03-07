@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [filter, setFilter] = useState("All")
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [editingJob, setEditingJob] = useState(null)
 
   useEffect(() => {
     fetchJobs()
@@ -35,7 +36,24 @@ const Dashboard = () => {
   const handleJobAdded = (newJob) => {
     setJobs([newJob, ...jobs])
   }
-
+  const handleUpdate = async (id) =>{
+    try {
+   
+    const { title, company, location, date_applied, status } = editingJob
+    
+      const res = await api.put(`/jobs/${id}`,{
+        title,
+        company,
+        location,
+        date_applied,
+        status
+      })
+      setJobs(jobs.map(job => job.job_id === id ? res.data : job))
+      setEditingJob(null)
+    } catch (error) {
+      console.error("Error updating job:", error)
+    }
+  }
   const handleDelete = async (id) => {
     try {
       await api.delete(`/jobs/${id}`)
@@ -128,54 +146,136 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredJobs.map((job, index) => (
-                  <tr
-                    key={job.job_id}
-                    className={`border-b border-slate-700/30 hover:bg-slate-700/20 transition ${
-                      index === filteredJobs.length - 1 ? "border-none" : ""
-                    }`}
-                  >
-                    <td className="px-6 py-4">
-                      <p className="text-white text-sm font-medium">{job.title}</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-slate-300 text-sm">{job.company}</p>
-                    </td>
-                    <td className="px-6 py-4 hidden md:table-cell">
-                      <p className="text-slate-400 text-sm">{job.location}</p>
-                    </td>
-                    <td className="px-6 py-4 hidden md:table-cell">
-                      <p className="text-slate-400 text-sm">
-                        {new Date(job.date_applied).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric"
-                        })}
-                      </p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`text-xs px-3 py-1 rounded-full font-medium ${statusColors[job.status]}`}>
-                        {job.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => handleDelete(job.job_id)}
-                        className="text-slate-500 hover:text-red-400 text-xs transition duration-200"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </div>
+  {filteredJobs.map((job, index) => (
+    <tr
+      key={job.job_id}
+      className={`border-b border-slate-700/30 hover:bg-slate-700/20 transition ${
+        index === filteredJobs.length - 1 ? "border-none" : ""
+      }`}
+    >
+      {/* title */}
+      <td className="px-6 py-4">
+        {editingJob?.job_id === job.job_id ? (
+          <input
+            value={editingJob.title}
+            onChange={(e) => setEditingJob({ ...editingJob, title: e.target.value })}
+            className="bg-[#334155] text-white text-sm rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#f59e0b] w-full"
+          />
+        ) : (
+          <p className="text-white text-sm font-medium">{job.title}</p>
+        )}
+      </td>
 
-      {/* modal */}
-      {showModal && (
+      {/* company */}
+      <td className="px-6 py-4">
+        {editingJob?.job_id === job.job_id ? (
+          <input
+            value={editingJob.company}
+            onChange={(e) => setEditingJob({ ...editingJob, company: e.target.value })}
+            className="bg-[#334155] text-white text-sm rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#f59e0b] w-full"
+          />
+        ) : (
+          <p className="text-slate-300 text-sm">{job.company}</p>
+        )}
+      </td>
+
+      {/* location */}
+      <td className="px-6 py-4 hidden md:table-cell">
+        {editingJob?.job_id === job.job_id ? (
+          <input
+            value={editingJob.location}
+            onChange={(e) => setEditingJob({ ...editingJob, location: e.target.value })}
+            className="bg-[#334155] text-white text-sm rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#f59e0b] w-full"
+          />
+        ) : (
+          <p className="text-slate-400 text-sm">{job.location}</p>
+        )}
+      </td>
+
+      {/* date applied */}
+      <td className="px-6 py-4 hidden md:table-cell">
+        {editingJob?.job_id === job.job_id ? (
+          <input
+            type="date"
+            value={editingJob.date_applied?.split("T")[0]}
+            onChange={(e) => setEditingJob({ ...editingJob, date_applied: e.target.value })}
+            className="bg-[#334155] text-white text-sm rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#f59e0b] w-full"
+          />
+        ) : (
+          <p className="text-slate-400 text-sm">
+            {new Date(job.date_applied).toLocaleDateString("en-GB", {
+              day: "numeric", month: "short", year: "numeric"
+            })}
+          </p>
+        )}
+      </td>
+
+      {/* status */}
+      <td className="px-6 py-4">
+        {editingJob?.job_id === job.job_id ? (
+          <select
+            value={editingJob.status}
+            onChange={(e) => setEditingJob({ ...editingJob, status: e.target.value })}
+            className="bg-[#334155] text-white text-sm rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#f59e0b]"
+          >
+            <option value="Applied">Applied</option>
+            <option value="Interviewing">Interviewing</option>
+            <option value="Offer">Offer</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        ) : (
+          <span className={`text-xs px-3 py-1 rounded-full font-medium ${statusColors[job.status]}`}>
+            {job.status}
+          </span>
+        )}
+      </td>
+
+      {/* actions */}
+      <td className="px-6 py-4">
+        <div className="flex items-center gap-3">
+          {editingJob?.job_id === job.job_id ? (
+            <>
+              <button
+                onClick={() => handleUpdate(job.job_id)}
+                className="text-xs text-green-400 hover:text-green-300 transition"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setEditingJob(null)}
+                className="text-xs text-slate-400 hover:text-white transition"
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setEditingJob({ ...job })}
+                className="text-xs text-[#f59e0b] hover:text-[#d97706] transition"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(job.job_id)}
+                className="text-xs text-slate-500 hover:text-red-400 transition"
+              >
+                    Delete
+                  </button>
+                </>
+              )}
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+      </table>
+        )}
+        </div>
+        </div>
+
+          {/* modal */}
+          {showModal && (
         <Jobcard
           onClose={() => setShowModal(false)}
           onJobAdded={handleJobAdded}
